@@ -1,0 +1,15 @@
+{
+  "name": "03-trip-hotel-csv-db",
+  "version": "1.0.0",
+  "description": "Trip.com hotel list scraper, CSV export, SQLite DB",
+  "type": "module",
+  "scripts": {
+    "collect": "node scripts/collect.js",
+    "csv-to-db": "node scripts/csv-to-db.js",
+    "setup-db": "node scripts/setup-db.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.6.0",
+    "playwright": "^1.58.2"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "GEO Download Info Collector",
+    "version": "1.0.0",
+    "description": "Collect GSE sample info, supplementary (HTTP) and raw (SRR, reads/spot) download paths for wget and SRA tools.",
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "downloads"
+    ],
+    "host_permissions": [
+        "*://*.ncbi.nlm.nih.gov/*",
+        "https://trace.ncbi.nlm.nih.gov/*",
+        "http://127.0.0.1:5000/*"
+    ]
+}

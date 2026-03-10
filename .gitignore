@@ -1,0 +1,23 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 04 확장 서버 DB (로컬 테스트용)
+04_geo_data_extension/server/geo_data.db
+
+# Playwright / 테스트
+01_playwright_geo_scrna/test-results/
+01_playwright_geo_scrna/playwright-report/
+01_playwright_geo_scrna/blob-report/
+playwright/.cache/
+
+# 기타
+.DS_Store
+.env
+*.log
