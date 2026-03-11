@@ -1,9 +1,16 @@
-# 숙제 3: 트립닷컴 호텔 데이터 수집 → CSV → DB 구축
+# 숙제 3: 트립닷컴 호텔 데이터 수집 + AI 리뷰 도우미
 
 ## 목표
 
-**번개장터 대신** 트립닷컴 호텔 검색/상세 데이터를 수집해 CSV로 저장하고, DB를 구축합니다.  
-대량 트래픽 차단을 피하기 위해 **Plan 후 agent로 build** 하고, 요청 간 딜레이·동시 요청 수 제한 등 매너를 준수합니다.
+1. **호텔 리스트** 수집 → CSV → DB 구축  
+2. **호텔 상세 페이지** 투숙객 리뷰 수집 + **AI 챗봇** (리뷰 기반 질의응답)
+
+---
+
+## Part A: 호텔 리스트 수집 (기존)
+
+트립닷컴 호텔 검색 결과를 수집해 CSV로 저장하고 DB를 구축합니다.  
+대량 트래픽 차단을 피하기 위해 요청 간 딜레이·동시 요청 수 제한 등 매너를 준수합니다.
 
 ## 수집 전략
 
@@ -52,7 +59,42 @@ CREATE TABLE hotels (
 
 PostgreSQL을 쓸 경우 타입만 적절히 바꾸면 됩니다.
 
-## 폴더 구성
+## Part B: 호텔 상세 페이지 — AI 리뷰 도우미 (확장 프로그램)
+
+호텔 상세 페이지 URL(예: `https://kr.trip.com/hotels/detail/?...hotelId=8899814...`)에 접속하면 오른쪽 하단에 **플로팅 봇**이 나타납니다.
+
+### 1단계: 리뷰 수집
+- 투숙객 리뷰를 **최신순** 정렬 후 수집
+- 페이징을 눌러 **최대 100개** 리뷰 수집
+- 수집 속성: 날짜, 작성자, 본문, 객실/방 관련 키워드(roomHint)
+
+### 2단계: AI 질의
+- 수집한 리뷰 **기반으로만** Gemini가 답변
+- 모델: `gemini-2.5-flash-lite`
+- API 키: `server/.env`의 `GEMINI_API_KEY`
+- context 초과 시 자동 요약·축소
+
+### 폴더 구성
+- `extension/` — Chrome 확장 (플로팅 봇, 리뷰 수집, 채팅 UI)
+- `server/` — Gemini API 프록시 (Express, `.env`에서 키 로드)
+
+### 실행 방법
+```bash
+# 1) 서버 (Gemini API)
+cd server
+cp .env.example .env   # GEMINI_API_KEY 입력
+npm install
+npm start
+
+# 2) Chrome 확장
+# chrome://extensions → 개발자 모드 → 압축해제된 확장 로드 → extension 폴더 선택
+
+# 3) Trip.com 호텔 상세 페이지 접속 후 플로팅 봇 사용
+```
+
+---
+
+## 폴더 구성 (전체)
 
 - `README.md` — 본 문서
 - `scripts/collect.js` — Playwright 호텔 리스트 수집, CSV 저장 (delay·매너 준수)
@@ -60,6 +102,8 @@ PostgreSQL을 쓸 경우 타입만 적절히 바꾸면 됩니다.
 - `scripts/setup-db.js` — (선택) DB 테이블만 먼저 생성
 - `schema/hotels.sql` — DB 테이블 정의
 - `output/` — 수집 후 생성되는 CSV 및 `hotels.db`
+- `extension/` — 호텔 상세 페이지 AI 리뷰 도우미 (Chrome 확장)
+- `server/` — Gemini API 프록시
 
 ## 실행 방법
 

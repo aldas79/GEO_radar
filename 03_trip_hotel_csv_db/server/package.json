@@ -1,0 +1,15 @@
+{
+  "name": "03-trip-hotel-ai-server",
+  "version": "1.0.0",
+  "description": "Gemini API proxy for Trip.com hotel review AI",
+  "type": "module",
+  "main": "api.js",
+  "scripts": {
+    "start": "node api.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}

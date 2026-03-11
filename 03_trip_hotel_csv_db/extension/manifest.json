@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Trip.com 호텔 리뷰 AI 도우미",
+  "version": "1.0.0",
+  "description": "호텔 상세 페이지 투숙객 리뷰 수집 및 AI 기반 질의응답",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://kr.trip.com/*",
+    "https://www.trip.com/*",
+    "http://127.0.0.1:8791/*",
+    "http://10.130.81.124:8791/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://kr.trip.com/hotels/detail/*",
+        "https://www.trip.com/hotels/detail/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["panel.html"], "matches": ["https://kr.trip.com/*", "https://www.trip.com/*"] }
+  ]
+}

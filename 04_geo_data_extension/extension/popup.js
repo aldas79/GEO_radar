@@ -128,9 +128,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return match ? match[1] : '';
     }
 
+    function normalizeGseId(raw) {
+        if (!raw || typeof raw !== 'string') return '';
+        let s = raw.replace(/\s/g, '').trim().toUpperCase();
+        const fromUrl = s.match(/acc=(GSE\d+)/i) || s.match(/(GSE\d+)/i);
+        if (fromUrl) return fromUrl[1].toUpperCase();
+        return /^GSE\d+$/.test(s) ? s : '';
+    }
+
     collectBtn.addEventListener('click', async () => {
-        const gseId = (gseInput.value || '').trim().toUpperCase();
-        if (!gseId || !/^GSE\d+$/.test(gseId)) {
+        const gseId = normalizeGseId(gseInput.value);
+        if (!gseId) {
             log('Error: Enter a valid GSE ID (e.g. GSE138669).');
             return;
         }
